@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/3c78e2f7ea.js"></script>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <style>
+
+        .headings{
+            font-family: 'Lobster', cursive;
+            font-size: 8rem;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="w3-bar-item w3-button w3-wide" href="/"><i class="fab fa-pinterest-p fa-3x"></i><i
+                        class="fab fa-meetup fa-3x"></i></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">Admin</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right"
+                sec:authorize="!isAuthenticated()">
+                <li><a href="/registrasi"><span
+                        class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/login"><span
+                        class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right"
+                sec:authorize="isAuthenticated()">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" sec:authentication="name"><span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron">
+        <h1 class="headings text-center">Registration success.</h1>
+        <p class="headings text-center">Please come in <a href="/login">Login</a></p>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>

@@ -1,0 +1,1159 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Photo-media-website</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/3c78e2f7ea.js"></script>
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Raleway", sans-serif
+        }
+        .logoutbtn{
+            padding: 4px;
+            margin-top: 10px;
+        }
+
+
+        body, html {
+            height: 100%;
+            line-height: 1.8;
+        }
+
+
+        .bgimg-1 {
+            background-position: center;
+            background-size: cover;
+            background-image: url("images/dark1.jpg");
+            min-height: 100%;
+        }
+
+        .w3-bar .w3-button {
+            padding: 16px;
+        }
+        .adminh1{
+            margin-top: 20%;
+            text-align: center;
+            font-family: 'Lobster', cursive;
+            font-size: 4rem;
+        }
+
+    </style>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+
+                                              <!-- Home Page -->
+
+<div sec:authorize="!isAuthenticated()">
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-card" id="myNavbar">
+            <a class="w3-bar-item w3-button w3-wide" href="#home"><i class="fab fa-pinterest-p fa-3x"></i><i
+                    class="fab fa-meetup fa-3x"></i></a>
+            <!-- Right-sided navbar links -->
+            <div class="w3-right w3-hide-small">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/"><i class="fa fa-home"></i>Home</a></li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">Admin</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right"
+                    sec:authorize="!isAuthenticated()">
+                    <li><a href="/registrasi"><span
+                            class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="/login"><span
+                            class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right"
+                    sec:authorize="isAuthenticated()">
+                    <li class="dropdown">
+
+                        <a class="dropdown-toggle"
+                                            data-toggle="dropdown" href="#" sec:authentication="name"><span
+                            class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <!--			<a href="/" class="w3-bar-item w3-button"><i class="fa fa-home"></i>HOME</a>-->
+                <!--						<a href="/about" class="w3-bar-item w3-button" th:href="@{/images}"><i class="fa fa-photo"></i> ALL IMAGES</a>-->
+                <a class="w3-bar-item w3-button" href="#about"><i class="fa fa-about"></i>ABOUT</a>
+                <!--						<a href="/about" class="w3-bar-item w3-button" th:href="@{/uploadphoto}"><i class="fa fa-upload"></i> UPLOAD PHOTO</a>-->
+                <!--						<a href="/adminhome" class="w3-bar-item w3-button" th:href="@{/adminhome}"><i class="fa fa-user"></i> Admin-HOME</a>-->
+                <a class="w3-bar-item w3-button" href="#work"><i class="fa fa-th"></i> WORK</a>
+                <a class="w3-bar-item w3-button" href="#pricing"><i class="fa fa-usd"></i> PRICING</a>
+                <a class="w3-bar-item w3-button" href="#contact"><i class="fa fa-envelope"></i> CONTACT</a>
+            </div>
+
+
+            <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" href="javascript:void(0)"
+               onclick="w3_open()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar on small screens when clicking the menu icon -->
+    <nav class="w3-sidebar w3-bar-block w3-light w3-card w3-animate-left w3-hide-medium w3-hide-large"
+         id="mySidebar" style="display:none">
+        <a class="w3-bar-item w3-button w3-large w3-padding-16" href="javascript:void(0)" onclick="w3_close()">Close
+            ×</a>
+        <a class="w3-bar-item w3-button" href="#about" onclick="w3_close()">ABOUT</a>
+        <a class="w3-bar-item w3-button" href="#team" onclick="w3_close()">TEAM</a>
+        <a class="w3-bar-item w3-button" href="#work" onclick="w3_close()">WORK</a>
+        <a class="w3-bar-item w3-button" href="#pricing" onclick="w3_close()">PRICING</a>
+        <a class="w3-bar-item w3-button" href="#contact" onclick="w3_close()">CONTACT</a>
+        <ul class="nav navbar-nav navbar-right"
+            sec:authorize="!isAuthenticated()">
+            <li><a href="/registrasi"><span
+                    class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="/login"><span
+                    class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right"
+            sec:authorize="isAuthenticated()">
+            <li class="dropdown"><a class="dropdown-toggle"
+                                    data-toggle="dropdown" href="#" sec:authentication="name"><span
+                    class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Header with full-height image -->
+    <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
+        <div class="w3-container w3-dark" style="padding:128px 16px">
+            <div class="w3-row-padding">
+                <div class="w3-col m6 w3-text-white" style="padding:48px">
+                    <h3 class="w3-jumbo ">We know design.</h3>
+                    <p class="w3-large">Stop wasting valuable time with projects that just isn't you.</p>
+                    <p><a class="w3-button w3-black  w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off" href="#work"><i class="fa fa-th"> </i> View Our Works</a></p>
+
+                </div>
+                <div class="w3-col  m6">
+
+<!--                        <img alt="Buildings" class="w3-image w3-round-large  w3-opacity-7" src="/images/darkj.jpg">-->
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="w3-display-left w3-text-white" style="padding:48px">
+
+
+
+
+        </div>
+        <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+            <i class="fa fa-facebook-official w3-hover-opacity"></i>
+            <i class="fa fa-instagram w3-hover-opacity"></i>
+            <i class="fa fa-snapchat w3-hover-opacity"></i>
+            <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+            <i class="fa fa-twitter w3-hover-opacity"></i>
+            <i class="fa fa-linkedin w3-hover-opacity"></i>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <div class="w3-container" id="about" style="padding:128px 16px">
+        <h3 class="w3-center">ABOUT THE COMPANY</h3>
+        <p class="w3-center w3-large">Key features of our company</p>
+        <div class="w3-row-padding w3-center" style="margin-top:64px">
+            <div class="w3-quarter">
+                <i class="fa fa-desktop w3-margin-bottom w3-jumbo w3-center"></i>
+                <p class="w3-large">Responsive</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore.</p>
+            </div>
+            <div class="w3-quarter">
+                <i class="fa fa-heart w3-margin-bottom w3-jumbo"></i>
+                <p class="w3-large">Passion</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore.</p>
+            </div>
+            <div class="w3-quarter">
+                <i class="fa fa-diamond w3-margin-bottom w3-jumbo"></i>
+                <p class="w3-large">Design</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore.</p>
+            </div>
+            <div class="w3-quarter">
+                <i class="fa fa-cog w3-margin-bottom w3-jumbo"></i>
+                <p class="w3-large">Support</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Promo Section - "We know design" -->
+    <div class="w3-container w3-light-grey" style="padding:128px 16px">
+        <div class="w3-row-padding">
+            <div class="w3-col m6">
+                <h3>We know design.</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>tempor incididunt ut
+                    labore et dolore.</p>
+                <p><a class="w3-button w3-black" href="#work"><i class="fa fa-th"> </i> View Our Works</a></p>
+            </div>
+            <div class="w3-col m6">
+                <img alt="Buildings" class="w3-image w3-round-large" height="394" src="/images/dark2.jpg"
+                     width="700">
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="w3-container" id="team" style="padding:128px 16px">
+        <h3 class="w3-center">THE TEAM</h3>
+        <p class="w3-center w3-large">The ones who runs this company</p>
+        <div class="w3-row-padding w3-grayscale" style="margin-top:64px">
+            <div class="w3-col l3 m6 w3-margin-bottom">
+                <div class="w3-card">
+                    <img alt="John" src="/images/dark3.jpg" style="width:100%">
+                    <div class="w3-container">
+                        <h3>Subham Sarkar</h3>
+                        <p class="w3-opacity">CEO & Founder</p>
+                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                            elementum.</p>
+                        <p>
+                            <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 w3-margin-bottom">
+                <div class="w3-card">
+                    <img alt="Jane" src="/images/dark4.jpg" style="width:100%">
+                    <div class="w3-container">
+                        <h3>Soumyadeep Karmakar</h3>
+                        <p class="w3-opacity">Art Director</p>
+                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                            elementum.</p>
+                        <p>
+                            <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 w3-margin-bottom">
+                <div class="w3-card">
+                    <img alt="Mike" src="/images/dark5.jpg" style="width:100%">
+                    <div class="w3-container">
+                        <h3>Abhradeep Bhatyacharya</h3>
+                        <p class="w3-opacity">Web Designer</p>
+                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                            elementum.</p>
+                        <p>
+                            <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l3 m6 w3-margin-bottom">
+                <div class="w3-card">
+                    <img alt="Dan" src="/images/dark6.jpg" style="width:100%">
+                    <div class="w3-container">
+                        <h3>Subhadeep Rakshit</h3>
+                        <p class="w3-opacity">Designer</p>
+                        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                            elementum.</p>
+                        <p>
+                            <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Promo Section "Statistics" -->
+    <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">
+        <div class="w3-quarter">
+            <span class="w3-xxlarge">14+</span>
+            <br>Partners
+        </div>
+        <div class="w3-quarter">
+            <span class="w3-xxlarge">55+</span>
+            <br>Projects Done
+        </div>
+        <div class="w3-quarter">
+            <span class="w3-xxlarge">89+</span>
+            <br>Happy Clients
+        </div>
+        <div class="w3-quarter">
+            <span class="w3-xxlarge">150+</span>
+            <br>Meetings
+        </div>
+    </div>
+
+    <!-- Work Section -->
+    <div class="w3-container" id="work" style="padding:128px 16px">
+        <h3 class="w3-center">OUR WORK</h3>
+        <p class="w3-center w3-large">What we've done for people</p>
+
+        <div class="w3-row-padding" style="margin-top:64px">
+            <div class="w3-col l3 m6">
+                <img alt="A microphone" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark7.jpg"
+                     style="width:100%">
+            </div>
+            <div class="w3-col l3 m6">
+                <img alt="A phone" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark8.jpg"
+                     style="width:100%">
+            </div>
+            <div class="w3-col l3 m6">
+                <img alt="A drone" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark9.jpg"
+                     style="width:100%">
+            </div>
+            <div class="w3-col l3 m6">
+                <img alt="Soundbox" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark10.jpg"
+                     style="width:100%">
+            </div>
+        </div>
+
+        <div class="w3-row-padding w3-section">
+            <div class="w3-col l3 m6">
+                <img alt="A tablet" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark11.jpg"
+                     style="width:100%">
+            </div>
+            <div class="w3-col l3 m6">
+                <img alt="A camera" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark12.jpg"
+                     style="width:100%">
+            </div>
+            <div class="w3-col l3 m6">
+                <img alt="A typewriter" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark13.jpg"
+                     style="width:100%">
+            </div>
+            <div class="w3-col l3 m6">
+                <img alt="A tableturner" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark14.jpg"
+                     style="width:100%">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for full size images on click-->
+    <div class="w3-modal w3-black" id="modal01" onclick="this.style.display='none'">
+            <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright"
+                  title="Close Modal Image">×</span>
+        <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+            <img class="w3-image" id="img01">
+            <p class="w3-opacity w3-large" id="caption"></p>
+        </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="w3-container w3-light-grey w3-padding-64">
+        <div class="w3-row-padding">
+            <div class="w3-col m6">
+                <h3>Our Skills.</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>
+                    tempor incididunt ut labore et dolore.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>
+                    tempor incididunt ut labore et dolore.</p>
+            </div>
+            <div class="w3-col m6">
+                <p class="w3-wide"><i class="fa fa-camera w3-margin-right"></i>Photography</p>
+                <div class="w3-grey">
+                    <div class="w3-container w3-dark-grey w3-center" style="width:90%">90%</div>
+                </div>
+                <p class="w3-wide"><i class="fa fa-desktop w3-margin-right"></i>Web Design</p>
+                <div class="w3-grey">
+                    <div class="w3-container w3-dark-grey w3-center" style="width:85%">85%</div>
+                </div>
+                <p class="w3-wide"><i class="fa fa-photo w3-margin-right"></i>Photoshop</p>
+                <div class="w3-grey">
+                    <div class="w3-container w3-dark-grey w3-center" style="width:75%">75%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <div class="w3-container w3-center w3-dark-grey" id="pricing" style="padding:128px 16px">
+        <h3>PRICING</h3>
+        <p class="w3-large">Choose a pricing plan that fits your needs.</p>
+        <div class="w3-row-padding" style="margin-top:64px">
+            <div class="w3-third w3-section">
+                <ul class="w3-ul w3-white w3-hover-shadow">
+                    <li class="w3-black w3-xlarge w3-padding-32">Basic</li>
+                    <li class="w3-padding-16"><b>10GB</b> Storage</li>
+                    <li class="w3-padding-16"><b>10</b> Emails</li>
+                    <li class="w3-padding-16"><b>10</b> Domains</li>
+                    <li class="w3-padding-16"><b>Endless</b> Support</li>
+                    <li class="w3-padding-16">
+                        <h2 class="w3-wide">$ 10</h2>
+                        <span class="w3-opacity">per month</span>
+                    </li>
+                    <li class="w3-light-grey w3-padding-24">
+                        <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="w3-third">
+                <ul class="w3-ul w3-white w3-hover-shadow">
+                    <li class="w3-red w3-xlarge w3-padding-48">Pro</li>
+                    <li class="w3-padding-16"><b>25GB</b> Storage</li>
+                    <li class="w3-padding-16"><b>25</b> Emails</li>
+                    <li class="w3-padding-16"><b>25</b> Domains</li>
+                    <li class="w3-padding-16"><b>Endless</b> Support</li>
+                    <li class="w3-padding-16">
+                        <h2 class="w3-wide">$ 25</h2>
+                        <span class="w3-opacity">per month</span>
+                    </li>
+                    <li class="w3-light-grey w3-padding-24">
+                        <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="w3-third w3-section">
+                <ul class="w3-ul w3-white w3-hover-shadow">
+                    <li class="w3-black w3-xlarge w3-padding-32">Premium</li>
+                    <li class="w3-padding-16"><b>50GB</b> Storage</li>
+                    <li class="w3-padding-16"><b>50</b> Emails</li>
+                    <li class="w3-padding-16"><b>50</b> Domains</li>
+                    <li class="w3-padding-16"><b>Endless</b> Support</li>
+                    <li class="w3-padding-16">
+                        <h2 class="w3-wide">$ 50</h2>
+                        <span class="w3-opacity">per month</span>
+                    </li>
+                    <li class="w3-light-grey w3-padding-24">
+                        <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="w3-container w3-light-grey" id="contact" style="padding:128px 16px">
+        <h3 class="w3-center">CONTACT</h3>
+        <p class="w3-center w3-large">Lets get in touch. Send us a message:</p>
+        <div style="margin-top:48px">
+            <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Bishnupur , West Bengal, India</p>
+            <p><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: +91 7908184060</p>
+            <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: sarkarrahul90933@gmail.com
+            </p>
+            <br>
+            <form action="/action_page.php" target="_blank">
+                <p><input class="w3-input w3-border" name="Name" placeholder="Name" required type="text"></p>
+                <p><input class="w3-input w3-border" name="Email" placeholder="Email" required type="text"></p>
+                <p><input class="w3-input w3-border" name="Subject" placeholder="Subject" required type="text"></p>
+                <p><input class="w3-input w3-border" name="Message" placeholder="Message" required type="text"></p>
+                <p>
+                    <button class="w3-button w3-black" type="submit">
+                        <i class="fa fa-paper-plane"></i> SEND MESSAGE
+                    </button>
+                </p>
+            </form>
+            <!-- Image of location/map -->
+
+            <div class="mapouter">
+                <div class="gmap_canvas">
+                    <iframe class="gmap_iframe" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"
+                            src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=bishnupur&amp;t=k&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+                            width="100%"></iframe>
+                    <a href="https://www.fridaynightfunkin.net/">FNF PC</a></div>
+                <style>.mapouter {
+                    position: relative;
+                    text-align: right;
+                    width: 100%;
+                    height: 400px;
+                }
+
+                .gmap_canvas {
+                    overflow: hidden;
+                    background: none !important;
+                    width: 100%;
+                    height: 400px;
+                }
+
+                .gmap_iframe {
+                    height: 400px !important;
+                }</style>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-center w3-black w3-padding-64">
+        <a class="w3-button w3-light-grey" href="#home"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+        <div class="w3-xlarge w3-section">
+            <i class="fa fa-facebook-official w3-hover-opacity"></i>
+            <i class="fa fa-instagram w3-hover-opacity"></i>
+            <i class="fa fa-snapchat w3-hover-opacity"></i>
+            <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+            <i class="fa fa-twitter w3-hover-opacity"></i>
+            <i class="fa fa-linkedin w3-hover-opacity"></i>
+        </div>
+        <p>Created by <a class="w3-hover-text-green" target="_blank" title="420CoderOp.css">Created By-Subham Sarkar from 420 Coder Op @Zapuza</a>
+        </p>
+        <p> Copyright © <a class="w3-hover-text-green" target="_blank" title="420CoderOp.css">2021 All Rights
+            Reserved</a></p>
+
+    </footer>
+
+
+
+</div>
+
+
+
+
+<div sec:authorize="isAuthenticated()">
+
+
+
+
+
+
+                            <!-- ADMIN PAGE FOR UPLOADING AND DOWNLOADING -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+
+        <div class="w3-top">
+            <div class="w3-bar w3-white w3-card" id="myNavbar">
+                <a class="w3-bar-item w3-button w3-wide" href="#home"><i class="fab fa-pinterest-p fa-3x"></i><i
+                        class="fab fa-meetup fa-3x"></i></a>
+                <!-- Right-sided navbar links -->
+                <div class="w3-right w3-hide-small">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/"><i class="fa fa-home"></i>Home</a></li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">Admin</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right"
+                        sec:authorize="!isAuthenticated()">
+                        <li><a href="/registrasi"><span
+                                class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="/login"><span
+                                class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav "
+                        sec:authorize="isAuthenticated()">
+                        <li class="dropdown"><a class="dropdown-toggle"
+                                                data-toggle="dropdown" href="#" sec:authentication="name"><span
+                                class="caret"></span></a>
+
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav "
+                        sec:authorize="isAuthenticated()">
+                        <ul>
+                            <button type="button" class="logoutbtn btn-info"><a href="/logout">Logout</a></button>
+                            <!--                            <li><a href="/logout">Logout</a></li>-->
+                        </ul>
+                    </ul>
+                    <!--			<a href="/" class="w3-bar-item w3-button"><i class="fa fa-home"></i>HOME</a>-->
+                    <a class="w3-bar-item w3-button" href="/images" th:href="@{/images}"><i class="fa fa-photo"></i> ALL
+                        IMAGES</a>
+                    <a class="w3-bar-item w3-button" href="#about"><i class="fa fa-about"></i>ABOUT</a>
+                    <a class="w3-bar-item w3-button" href="/uploadwinphoto" th:href="@{/uploadwinphoto}"><i
+                            class="fa fa-upload"></i> UPLOAD WINER DETAILS</a>
+                    <a class="w3-bar-item w3-button" href="/winerdelete" th:href="@{/winerdelete}"><i
+                            class="fa fa-upload"></i> Delete WINER DETAILS</a>
+                    <a class="w3-bar-item w3-button" href="/deleteallimages" th:href="@{/deleteallimages}"><i
+                            class="fa fa-upload"></i> Delete-ALL-IMAGES</a>
+                    <a class="w3-bar-item w3-button" href="/winer" th:href="@{/winer}"><i class="fa fa-trophy"></i>
+                        WINER ZONE</a>
+
+                    <a class="w3-bar-item w3-button" href="#work"><i class="fa fa-th"></i> WORK</a>
+                    <a class="w3-bar-item w3-button" href="#pricing"><i class="fa fa-usd"></i> PRICING</a>
+                    <a class="w3-bar-item w3-button" href="#contact"><i class="fa fa-envelope"></i> CONTACT</a>
+                </div>
+                <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+                <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" href="javascript:void(0)"
+                   onclick="w3_open()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sidebar on small screens when clicking the menu icon -->
+        <nav class="w3-sidebar w3-bar-block w3-light w3-card w3-animate-left w3-hide-medium w3-hide-large"
+             id="mySidebar" style="display:none">
+            <a class="w3-bar-item w3-button w3-large w3-padding-16" href="javascript:void(0)" onclick="w3_close()">Close
+                ×</a>
+            <a class="w3-bar-item w3-button" href="#about" onclick="w3_close()">ABOUT</a>
+            <a class="w3-bar-item w3-button" href="/images" th:href="@{/images}"><i class="fa fa-photo"></i> ALL IMAGES</a>
+
+            <a class="w3-bar-item w3-button" href="/uploadwinphoto" th:href="@{/uploadwinphoto}"><i class="fa fa-upload"></i>
+                UPLOAD WINER DETAILS</a>
+            <a class="w3-bar-item w3-button" href="/winer" th:href="@{/winer}"><i class="fa fa-trophy"></i>
+               WINER ZONE</a>
+            <a class="w3-bar-item w3-button" href="/winerdelete" th:href="@{/winerdelete}"><i
+                    class="fa fa-upload"></i> Delete WINER DETAILS</a>
+            <a class="w3-bar-item w3-button" href="/deleteallimages" th:href="@{/deleteallimages}"><i
+                    class="fa fa-upload"></i> Delete-ALL-IMAGES</a>
+            <a class="w3-bar-item w3-button" href="#team" onclick="w3_close()">TEAM</a>
+            <a class="w3-bar-item w3-button" href="#work" onclick="w3_close()">WORK</a>
+            <a class="w3-bar-item w3-button" href="#pricing" onclick="w3_close()">PRICING</a>
+            <a class="w3-bar-item w3-button" href="#contact" onclick="w3_close()">CONTACT</a>
+            <ul class="nav navbar-nav navbar-right"
+                sec:authorize="!isAuthenticated()">
+                <li><a href="/registrasi"><span
+                        class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/login"><span
+                        class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right"
+                sec:authorize="isAuthenticated()">
+                <li class="dropdown"><a class="dropdown-toggle"
+                                        data-toggle="dropdown" href="#" sec:authentication="name"><span
+                        class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <h1 class="adminh1">
+                Hello, <span sec:authentication="name"></span> ! you are Admin
+                <br>
+                Please choose winer from their Images & Upload them @WINER DETAILS PAGE
+            </h1>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+                                       <!-- USER PAGE AFTER LOGIN -->
+
+    <div class="member " sec:authorize="hasRole('ROLE_MEMBER')">
+
+        <div class="w3-top">
+            <div class="w3-bar w3-white w3-card" id="myNavbar">
+                <a class="w3-bar-item w3-button w3-wide" href="#home"><i class="fab fa-pinterest-p fa-3x"></i><i
+                        class="fab fa-meetup fa-3x"></i></a>
+                <!-- Right-sided navbar links -->
+                <div class="w3-right w3-hide-small">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/"><i class="fa fa-home"></i>Home</a></li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">Admin</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right"
+                        sec:authorize="!isAuthenticated()">
+                        <li><a href="/registrasi"><span
+                                class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="/login"><span
+                                class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav "
+                        sec:authorize="isAuthenticated()">
+                        <li class="dropdown"><a class="dropdown-toggle"
+                                                data-toggle="dropdown" href="#" sec:authentication="name"><span
+                                class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav "
+                        sec:authorize="isAuthenticated()">
+                        <ul>
+                            <button type="button" class="logoutbtn btn-info"><a href="/logout">Logout</a></button>
+<!--                            <li><a href="/logout">Logout</a></li>-->
+                        </ul>
+                    </ul>
+
+                    <!--			<a href="/" class="w3-bar-item w3-button"><i class="fa fa-home"></i>HOME</a>-->
+                    <a class="w3-bar-item w3-button" href="/images" th:href="@{/images}"><i class="fa fa-photo"></i> ALL
+                        IMAGES</a>
+                    <a class="w3-bar-item w3-button" href="#about"><i class="fa fa-about"></i>ABOUT</a>
+                    <a class="w3-bar-item w3-button" href="/uploadphoto" th:href="@{/uploadphoto}"><i
+                            class="fa fa-upload"></i> UPLOAD PHOTO</a>
+                    <a class="w3-bar-item w3-button" href="/winer" th:href="@{/winer}"><i class="fa fa-trophy"></i>
+                        WINER ZONE</a>
+
+                    <a class="w3-bar-item w3-button" href="#work"><i class="fa fa-th"></i> WORK</a>
+                    <a class="w3-bar-item w3-button" href="#pricing"><i class="fa fa-usd"></i> PRICING</a>
+                    <a class="w3-bar-item w3-button" href="#contact"><i class="fa fa-envelope"></i> CONTACT</a>
+                </div>
+                <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+                <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" href="javascript:void(0)"
+                   onclick="w3_open()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sidebar on small screens when clicking the menu icon -->
+        <nav class="w3-sidebar w3-bar-block w3-light w3-card w3-animate-left w3-hide-medium w3-hide-large"
+             id="mySidebar" style="display:none">
+            <a class="w3-bar-item w3-button w3-large w3-padding-16" href="javascript:void(0)" onclick="w3_close()">Close
+                ×</a>
+            <a class="w3-bar-item w3-button" href="#about" onclick="w3_close()">ABOUT</a>
+            <a class="w3-bar-item w3-button" href="/images" th:href="@{/images}"><i class="fa fa-photo"></i> ALL IMAGES</a>
+
+            <a class="w3-bar-item w3-button" href="/uploadphoto" th:href="@{/uploadphoto}"><i class="fa fa-upload"></i>
+                UPLOAD PHOTO</a>
+            <a class="w3-bar-item w3-button" href="/winer" th:href="@{/winer}"><i class="fa fa-trophy"></i>
+                WINER ZONE</a>
+            <a class="w3-bar-item w3-button" href="#team" onclick="w3_close()">TEAM</a>
+            <a class="w3-bar-item w3-button" href="#work" onclick="w3_close()">WORK</a>
+            <a class="w3-bar-item w3-button" href="#pricing" onclick="w3_close()">PRICING</a>
+            <a class="w3-bar-item w3-button" href="#contact" onclick="w3_close()">CONTACT</a>
+            <ul class="nav navbar-nav navbar-right"
+                sec:authorize="!isAuthenticated()">
+                <li><a href="/registrasi"><span
+                        class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/login"><span
+                        class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right"
+                sec:authorize="isAuthenticated()">
+                <li class="dropdown"><a class="dropdown-toggle"
+                                        data-toggle="dropdown" href="#" sec:authentication="name"><span
+                        class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+
+        <!-- Header with full-height image -->
+        <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
+            <div class="w3-container w3-dark" style="padding:128px 16px">
+                <div class="w3-row-padding">
+                    <div class="w3-col m6 w3-text-white" style="padding:48px">
+                        <h3 class="w3-jumbo ">We know design.</h3>
+                        <p class="w3-large">Stop wasting valuable time with projects that just isn't you.</p>
+                        <p><a class="w3-button w3-black  w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off" href="#work"><i class="fa fa-th"> </i> View Our Works</a></p>
+
+                    </div>
+                    <div class="w3-col  m6">
+
+                        <!--                        <img alt="Buildings" class="w3-image w3-round-large  w3-opacity-7" src="/images/darkj.jpg">-->
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="w3-display-left w3-text-white" style="padding:48px">
+
+
+
+
+            </div>
+            <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+                <i class="fa fa-facebook-official w3-hover-opacity"></i>
+                <i class="fa fa-instagram w3-hover-opacity"></i>
+                <i class="fa fa-snapchat w3-hover-opacity"></i>
+                <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+                <i class="fa fa-twitter w3-hover-opacity"></i>
+                <i class="fa fa-linkedin w3-hover-opacity"></i>
+            </div>
+        </header>
+
+
+        <!-- About Section -->
+        <div class="w3-container" id="about" style="padding:128px 16px">
+            <h3 class="w3-center">ABOUT THE COMPANY</h3>
+            <p class="w3-center w3-large">Key features of our company</p>
+            <div class="w3-row-padding w3-center" style="margin-top:64px">
+                <div class="w3-quarter">
+                    <i class="fa fa-desktop w3-margin-bottom w3-jumbo w3-center"></i>
+                    <p class="w3-large">Responsive</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore.</p>
+                </div>
+                <div class="w3-quarter">
+                    <i class="fa fa-heart w3-margin-bottom w3-jumbo"></i>
+                    <p class="w3-large">Passion</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore.</p>
+                </div>
+                <div class="w3-quarter">
+                    <i class="fa fa-diamond w3-margin-bottom w3-jumbo"></i>
+                    <p class="w3-large">Design</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore.</p>
+                </div>
+                <div class="w3-quarter">
+                    <i class="fa fa-cog w3-margin-bottom w3-jumbo"></i>
+                    <p class="w3-large">Support</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promo Section - "We know design" -->
+        <div class="w3-container w3-light-grey" style="padding:128px 16px">
+            <div class="w3-row-padding">
+                <div class="w3-col m6">
+                    <h3>We know design.</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>tempor incididunt ut
+                        labore et dolore.</p>
+                    <p><a class="w3-button w3-black" href="#work"><i class="fa fa-th"> </i> View Our Works</a></p>
+                </div>
+                <div class="w3-col m6">
+                    <img alt="Buildings" class="w3-image w3-round-large" height="394" src="/images/dark2.jpg"
+                         width="700">
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="w3-container" id="team" style="padding:128px 16px">
+            <h3 class="w3-center">THE TEAM</h3>
+            <p class="w3-center w3-large">The ones who runs this company</p>
+            <div class="w3-row-padding w3-grayscale" style="margin-top:64px">
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-card">
+                        <img alt="John" src="/images/dark3.jpg" style="width:100%">
+                        <div class="w3-container">
+                            <h3>Subham Sarkar</h3>
+                            <p class="w3-opacity">CEO & Founder</p>
+                            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                                elementum.</p>
+                            <p>
+                                <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-card">
+                        <img alt="Jane" src="/images/dark4.jpg" style="width:100%">
+                        <div class="w3-container">
+                            <h3>Soumyadeep Karmakar</h3>
+                            <p class="w3-opacity">Art Director</p>
+                            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                                elementum.</p>
+                            <p>
+                                <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-card">
+                        <img alt="Mike" src="/images/dark5.jpg" style="width:100%">
+                        <div class="w3-container">
+                            <h3>Abhradeep Bhatyacharya</h3>
+                            <p class="w3-opacity">Web Designer</p>
+                            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                                elementum.</p>
+                            <p>
+                                <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-card">
+                        <img alt="Dan" src="/images/dark6.jpg" style="width:100%">
+                        <div class="w3-container">
+                            <h3>Subhadeep Rakshit</h3>
+                            <p class="w3-opacity">Designer</p>
+                            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque
+                                elementum.</p>
+                            <p>
+                                <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promo Section "Statistics" -->
+        <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">
+            <div class="w3-quarter">
+                <span class="w3-xxlarge">14+</span>
+                <br>Partners
+            </div>
+            <div class="w3-quarter">
+                <span class="w3-xxlarge">55+</span>
+                <br>Projects Done
+            </div>
+            <div class="w3-quarter">
+                <span class="w3-xxlarge">89+</span>
+                <br>Happy Clients
+            </div>
+            <div class="w3-quarter">
+                <span class="w3-xxlarge">150+</span>
+                <br>Meetings
+            </div>
+        </div>
+
+        <!-- Work Section -->
+        <div class="w3-container" id="work" style="padding:128px 16px">
+            <h3 class="w3-center">OUR WORK</h3>
+            <p class="w3-center w3-large">What we've done for people</p>
+
+            <div class="w3-row-padding" style="margin-top:64px">
+                <div class="w3-col l3 m6">
+                    <img alt="A microphone" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark7.jpg"
+                         style="width:100%">
+                </div>
+                <div class="w3-col l3 m6">
+                    <img alt="A phone" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark8.jpg"
+                         style="width:100%">
+                </div>
+                <div class="w3-col l3 m6">
+                    <img alt="A drone" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark9.jpg"
+                         style="width:100%">
+                </div>
+                <div class="w3-col l3 m6">
+                    <img alt="Soundbox" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark10.jpg"
+                         style="width:100%">
+                </div>
+            </div>
+
+            <div class="w3-row-padding w3-section">
+                <div class="w3-col l3 m6">
+                    <img alt="A tablet" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark11.jpg"
+                         style="width:100%">
+                </div>
+                <div class="w3-col l3 m6">
+                    <img alt="A camera" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark12.jpg"
+                         style="width:100%">
+                </div>
+                <div class="w3-col l3 m6">
+                    <img alt="A typewriter" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark13.jpg"
+                         style="width:100%">
+                </div>
+                <div class="w3-col l3 m6">
+                    <img alt="A tableturner" class="w3-hover-opacity" onclick="onClick(this)" src="/images/dark14.jpg"
+                         style="width:100%">
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for full size images on click-->
+        <div class="w3-modal w3-black" id="modal01" onclick="this.style.display='none'">
+            <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright"
+                  title="Close Modal Image">×</span>
+            <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+                <img class="w3-image" id="img01">
+                <p class="w3-opacity w3-large" id="caption"></p>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="w3-container w3-light-grey w3-padding-64">
+            <div class="w3-row-padding">
+                <div class="w3-col m6">
+                    <h3>Our Skills.</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>
+                        tempor incididunt ut labore et dolore.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod<br>
+                        tempor incididunt ut labore et dolore.</p>
+                </div>
+                <div class="w3-col m6">
+                    <p class="w3-wide"><i class="fa fa-camera w3-margin-right"></i>Photography</p>
+                    <div class="w3-grey">
+                        <div class="w3-container w3-dark-grey w3-center" style="width:90%">90%</div>
+                    </div>
+                    <p class="w3-wide"><i class="fa fa-desktop w3-margin-right"></i>Web Design</p>
+                    <div class="w3-grey">
+                        <div class="w3-container w3-dark-grey w3-center" style="width:85%">85%</div>
+                    </div>
+                    <p class="w3-wide"><i class="fa fa-photo w3-margin-right"></i>Photoshop</p>
+                    <div class="w3-grey">
+                        <div class="w3-container w3-dark-grey w3-center" style="width:75%">75%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="w3-container w3-center w3-dark-grey" id="pricing" style="padding:128px 16px">
+            <h3>PRICING</h3>
+            <p class="w3-large">Choose a pricing plan that fits your needs.</p>
+            <div class="w3-row-padding" style="margin-top:64px">
+                <div class="w3-third w3-section">
+                    <ul class="w3-ul w3-white w3-hover-shadow">
+                        <li class="w3-black w3-xlarge w3-padding-32">Basic</li>
+                        <li class="w3-padding-16"><b>10GB</b> Storage</li>
+                        <li class="w3-padding-16"><b>10</b> Emails</li>
+                        <li class="w3-padding-16"><b>10</b> Domains</li>
+                        <li class="w3-padding-16"><b>Endless</b> Support</li>
+                        <li class="w3-padding-16">
+                            <h2 class="w3-wide">$ 10</h2>
+                            <span class="w3-opacity">per month</span>
+                        </li>
+                        <li class="w3-light-grey w3-padding-24">
+                            <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w3-third">
+                    <ul class="w3-ul w3-white w3-hover-shadow">
+                        <li class="w3-red w3-xlarge w3-padding-48">Pro</li>
+                        <li class="w3-padding-16"><b>25GB</b> Storage</li>
+                        <li class="w3-padding-16"><b>25</b> Emails</li>
+                        <li class="w3-padding-16"><b>25</b> Domains</li>
+                        <li class="w3-padding-16"><b>Endless</b> Support</li>
+                        <li class="w3-padding-16">
+                            <h2 class="w3-wide">$ 25</h2>
+                            <span class="w3-opacity">per month</span>
+                        </li>
+                        <li class="w3-light-grey w3-padding-24">
+                            <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w3-third w3-section">
+                    <ul class="w3-ul w3-white w3-hover-shadow">
+                        <li class="w3-black w3-xlarge w3-padding-32">Premium</li>
+                        <li class="w3-padding-16"><b>50GB</b> Storage</li>
+                        <li class="w3-padding-16"><b>50</b> Emails</li>
+                        <li class="w3-padding-16"><b>50</b> Domains</li>
+                        <li class="w3-padding-16"><b>Endless</b> Support</li>
+                        <li class="w3-padding-16">
+                            <h2 class="w3-wide">$ 50</h2>
+                            <span class="w3-opacity">per month</span>
+                        </li>
+                        <li class="w3-light-grey w3-padding-24">
+                            <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="w3-container w3-light-grey" id="contact" style="padding:128px 16px">
+            <h3 class="w3-center">CONTACT</h3>
+            <p class="w3-center w3-large">Lets get in touch. Send us a message:</p>
+            <div style="margin-top:48px">
+                <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Bishnupur , West Bengal, India</p>
+                <p><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: +91 7908184060</p>
+                <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: sarkarrahul90933@gmail.com
+                </p>
+                <br>
+                <form action="/action_page.php" target="_blank">
+                    <p><input class="w3-input w3-border" name="Name" placeholder="Name" required type="text"></p>
+                    <p><input class="w3-input w3-border" name="Email" placeholder="Email" required type="text"></p>
+                    <p><input class="w3-input w3-border" name="Subject" placeholder="Subject" required type="text"></p>
+                    <p><input class="w3-input w3-border" name="Message" placeholder="Message" required type="text"></p>
+                    <p>
+                        <button class="w3-button w3-black" type="submit">
+                            <i class="fa fa-paper-plane"></i> SEND MESSAGE
+                        </button>
+                    </p>
+                </form>
+                <!-- Image of location/map -->
+
+                <div class="mapouter">
+                    <div class="gmap_canvas">
+                        <iframe class="gmap_iframe" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"
+                                src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=bishnupur&amp;t=k&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+                                width="100%"></iframe>
+                        <a href="https://www.fridaynightfunkin.net/">FNF PC</a></div>
+                    <style>.mapouter {
+                        position: relative;
+                        text-align: right;
+                        width: 100%;
+                        height: 400px;
+                    }
+
+                    .gmap_canvas {
+                        overflow: hidden;
+                        background: none !important;
+                        width: 100%;
+                        height: 400px;
+                    }
+
+                    .gmap_iframe {
+                        height: 400px !important;
+                    }</style>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="w3-center w3-black w3-padding-64">
+            <a class="w3-button w3-light-grey" href="#home"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+            <div class="w3-xlarge w3-section">
+                <i class="fa fa-facebook-official w3-hover-opacity"></i>
+                <i class="fa fa-instagram w3-hover-opacity"></i>
+                <i class="fa fa-snapchat w3-hover-opacity"></i>
+                <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+                <i class="fa fa-twitter w3-hover-opacity"></i>
+                <i class="fa fa-linkedin w3-hover-opacity"></i>
+            </div>
+            <p>Created by <a class="w3-hover-text-green" target="_blank" title="420CoderOp.css">Created By-Subham Sarkar from 420 Coder Op @Zapuza</a>
+            </p>
+            <p> Copyright © <a class="w3-hover-text-green" target="_blank" title="420CoderOp.css">2021 All Rights
+                Reserved</a></p>
+
+        </footer>
+
+
+    </div>
+</div>
+
+<script>
+    // Modal Image Gallery
+    function onClick(element) {
+        document.getElementById("img01").src = element.src;
+        document.getElementById("modal01").style.display = "block";
+        var captionText = document.getElementById("caption");
+        captionText.innerHTML = element.alt;
+    }
+
+
+    // Toggle between showing and hiding the sidebar when clicking the menu icon
+    var mySidebar = document.getElementById("mySidebar");
+
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+        } else {
+            mySidebar.style.display = 'block';
+        }
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        mySidebar.style.display = "none";
+    }
+</script>
+
+<script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
